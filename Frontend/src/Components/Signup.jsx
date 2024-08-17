@@ -16,7 +16,7 @@ const Signup = () => {
     initialValues, onSubmit: (values,{resetForm}) => {
       alert(JSON.stringify(values, null, 2));
       resetForm();
-      navigate('/')
+      navigate('/login')
     },
   });
 
@@ -93,7 +93,7 @@ const Signup = () => {
         <br/>
         <div className="text-center">
           <p className="text-sm text-gray-600">Already have an account?</p>
-          <button onClick={() => navigate('/')} className="text-indigo-600 hover:text-indigo-800">
+          <button onClick={() => navigate('/login')} className="text-indigo-600 hover:text-indigo-800">
             Login
           </button>
         </div>

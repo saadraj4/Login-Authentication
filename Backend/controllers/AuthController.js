@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-exports.registerUser = async (req, res) => {
+const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
@@ -30,7 +30,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -54,3 +54,9 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+module.exports = {
+  loginUser,
+  registerUser,
+}

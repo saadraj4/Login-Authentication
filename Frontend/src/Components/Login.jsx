@@ -60,7 +60,7 @@ const Login = () => {
 
         <div className="text-center">
           <p className="text-sm text-gray-600">New Here?</p>
-          <button onClick={() => navigate('/signup')} className="text-indigo-600 hover:text-indigo-800">
+          <button onClick={() => navigate('/')} className="text-indigo-600 hover:text-indigo-800">
             Sign Up
           </button>
         </div>
