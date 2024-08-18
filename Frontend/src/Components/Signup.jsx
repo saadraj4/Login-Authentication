@@ -1,38 +1,57 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Signup = () => {
     document.title = "Signup"; // Change the title here
   
     const initialValues =  {
-        fullName: '',
+        username: '',
         email: '',
         password: '',
         confirmPassword: '',
+        image:null
       }
     const navigate = useNavigate()
   const formik = useFormik({
-    initialValues, onSubmit: (values,{resetForm}) => {
-      alert(JSON.stringify(values, null, 2));
+    initialValues, onSubmit: async (values,{resetForm}) => {      
+      try{
+        
+        const response = await axios.post('http://localhost:5000/api/auth/register', values, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        const { token } = response.data;
+      // Store the token in local storage
+      localStorage.setItem('authToken', token);
+      alert("SignUp Successful");
+
       resetForm();
       navigate('/login')
-    },
+    }
+    catch(error){
+      alert(JSON.stringify(error.message, null, 2));
+      // alert(response.data.error.message);
+    }
+    },  
   });
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center">Sign Up</h2>
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
               Full Name
             </label>
             <br/>
             <input
-              id="fullName"
-              name="fullName"
+              id="username"
+              name="username"
               type="text"
               onChange={formik.handleChange}
               value={formik.values.fullName}
@@ -79,6 +98,23 @@ const Signup = () => {
               type="password"
               onChange={formik.handleChange}
               value={formik.values.confirmPassword}
+              className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            />
+          </div>
+          <br/>
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Upload Image
+            </label>
+            <br/>
+            <input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              onChange={(event) => {
+                formik.setFieldValue("image", event.currentTarget.files[0]);
+              }}
               className="w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
