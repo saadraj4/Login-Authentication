@@ -60,8 +60,14 @@ const loginUser = async (req, res) => {
 
     // Generate JWT
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+     // Convert image to base64
+     const base64Image = user.image.toString('base64');
 
-    res.json({ token });
+    res.json({ token,user: {
+        username: user.username,
+        email: user.email,
+        image: base64Image
+      }});
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
